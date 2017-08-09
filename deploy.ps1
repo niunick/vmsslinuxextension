@@ -5,10 +5,7 @@
 .DESCRIPTION
        Deploy Azure ARM templates
 .NOTES
-       Author: Jano Lu
-	   Email:  lu.yitong@oe.21vianet.com
-       Date: 2017/03
-       Revision: 2.0
+    
 #>
 
 <#install-module azurerm -scope CurrentUser
@@ -17,13 +14,33 @@
 
 #Add-AzureRmAccount -EnvironmentName AzureChinaCloud
 #>
+
+
+
+
+
+$adminARMEndpoint = "https://adminmanagement.local.azurestack.external"
+$ServiceAdminUsername = 'asadmin@nicktestad.onmicrosoft.com'
+$ServiceAdminPassword = 'nick123!'
+
+
+$MASCredential = New-Object System.Management.Automation.PSCredential "$ServiceAdminUsername", (ConvertTo-SecureString "$ServiceAdminPassword" -AsPlainText -Force)
+Add-AzureRmEnvironment -Name 'AzureStackAdmin' -ArmEndpoint $adminarmendpoint
+$MASEnv = Add-AzureRmAccount -EnvironmentName 'AzureStackAdmin' -Credential $MASCredential
+
+Login-AzureRmAccount -EnvironmentName 'AzureStackAdmin' 
+
+
+
+
+
 $VerbosePreference="Continue"
 $deployName="nickvmss5"
 $RGName=$deployName
-$locName="China East"
+$locName="local"
 
-$templateFile= "D:\Warehouse\10_Tech\git\vmsscustom\azuredeploy.json"
-$templateParameterFile= "D:\Warehouse\10_Tech\git\vmsscustom\azuredeploy.parameters"
+$templateFile= ".\azuredeploy.json"
+$templateParameterFile= ".\azuredeploy.parameters"
 New-AzureRmResourceGroup -Name $RGName -Location $locName -Force
 
 echo New-AzureRmResourceGroupDeployment -Name $deployName -ResourceGroupName $RGName -TemplateFile $templateFile
