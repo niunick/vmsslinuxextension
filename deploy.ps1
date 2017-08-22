@@ -19,29 +19,22 @@
 
 
 
-$adminARMEndpoint = "https://adminmanagement.local.azurestack.external"
-$ServiceAdminUsername = 'asadmin@nicktestad.onmicrosoft.com'
-$ServiceAdminPassword = 'nick123!'
+$adminARMEndpoint = "https://management.local.azurestack.external"
+Add-AzureRmEnvironment -Name 'AzureStackenv' -ArmEndpoint $adminarmendpoint
+Login-AzureRmAccount -EnvironmentName "AzureStackenv"
+$locName="local"
 
-
-$MASCredential = New-Object System.Management.Automation.PSCredential "$ServiceAdminUsername", (ConvertTo-SecureString "$ServiceAdminPassword" -AsPlainText -Force)
-Add-AzureRmEnvironment -Name 'AzureStackAdmin' -ArmEndpoint $adminarmendpoint
-$MASEnv = Add-AzureRmAccount -EnvironmentName 'AzureStackAdmin' -Credential $MASCredential
-
-Login-AzureRmAccount -EnvironmentName 'AzureStackAdmin' 
-
-
+#Login-AzureRmAccount -EnvironmentName 'AzureCloud' 
+#$locname="East Asia"
 
 
 
 $VerbosePreference="Continue"
-$deployName="nickvmss5"
+$deployName="nickvmss6"
 $RGName=$deployName
-$locName="local"
 
 $templateFile= ".\azuredeploy.json"
 $templateParameterFile= ".\azuredeploy.parameters"
 New-AzureRmResourceGroup -Name $RGName -Location $locName -Force
 
-echo New-AzureRmResourceGroupDeployment -Name $deployName -ResourceGroupName $RGName -TemplateFile $templateFile
 New-AzureRmResourceGroupDeployment -Name $deployName -ResourceGroupName $RGName -TemplateParameterFile $templateParameterFile -TemplateFile $templateFile
