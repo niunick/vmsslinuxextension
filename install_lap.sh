@@ -5,8 +5,8 @@
 sudo su -
 apt-get -y update
 apt-get -y update
-apt-get -y install apache2 php5
-apt-get -y install apache2 php5
+apt-get -y install apache2 php
+apt-get -y install apache2 php
 
 cp index.php /var/www/html/
 cp do_work.php /var/www/html/
